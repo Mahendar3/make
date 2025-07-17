@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Virtual Dressing Room</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8;
+        }
+        .avatar-container {
+            position: relative;
+            width: 300px;
+            height: 500px;
+            margin: 0 auto;
+        }
+        .avatar-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            transition: all 0.3s ease;
+        }
+        .clothing-item {
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .clothing-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        .clothing-item.selected {
+            border: 3px solid #3b82f6;
+        }
+    </style>
+</head>
+<body>
+    <div class="min-h-screen">
+        <header class="bg-gradient-to-r from-blue-500 to-purple-600 text-white py-6 shadow-lg">
+            <div class="container mx-auto px-4">
+                <h1 class="text-3xl font-bold text-center">Virtual Dressing Room</h1>
+                <p class="text-center mt-2 text-blue-100">Mix and match outfits with our interactive wardrobe</p>
+            </div>
+        </header>
+
+        <main class="container mx-auto px-4 py-8">
+            <div class="flex flex-col lg:flex-row gap-8">
+                <!-- Avatar Display Area -->
+                <div class="lg:w-1/2 bg-white rounded-xl shadow-lg p-6">
+                    <h2 class="text-xl font-semibold mb-4 text-gray-700 text-center">Preview</h2>
+                    <div class="avatar-container bg-gray-100 rounded-lg">
+                        <!-- Base Avatar -->
+                        <svg class="avatar-layer" viewBox="0 0 300 500" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Head -->
+                            <circle cx="150" cy="70" r="50" fill="#FFD3B5"/>
+                            <!-- Body -->
+                            <path d="M100,120 L100,350 Q150,370 200,350 L200,120 Q150,140 100,120" fill="#FFD3B5"/>
+                            <!-- Arms -->
+                            <path d="M100,120 L60,250 L70,260 L110,130 Z" fill="#FFD3B5"/>
+                            <path d="M200,120 L240,250 L230,260 L190,130 Z" fill="#FFD3B5"/>
+                            <!-- Legs -->
+                            <path d="M100,350 L90,500 L130,500 L140,350 Z" fill="#FFD3B5"/>
+                            <path d="M200,350 L210,500 L170,500 L160,350 Z" fill="#FFD3B5"/>
+                            <!-- Face -->
+                            <circle cx="135" cy="65" r="5" fill="#333"/>
+                            <circle cx="165" cy="65" r="5" fill="#333"/>
+                            <path d="M140,85 Q150,95 160,85" fill="none" stroke="#333" stroke-width="2"/>
+                        </svg>
+                        
+                        <!-- Shirt Layer -->
+                        <svg id="shirt-layer" class="avatar-layer" viewBox="0 0 300 500" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Empty initially -->
+                        </svg>
+                        
+                        <!-- Pants Layer -->
+                        <svg id="pants-layer" class="avatar-layer" viewBox="0 0 300 500" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Empty initially -->
+                        </svg>
+                        
+                        <!-- Shoes Layer -->
+                        <svg id="shoes-layer" class="avatar-layer" viewBox="0 0 300 500" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Empty initially -->
+                        </svg>
+                    </div>
+                    <div class="mt-6 flex justify-center">
+                        <button id="reset-btn" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition-colors">
+                            Reset Outfit
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Clothing Selection Area -->
+                <div class="lg:w-1/2">
+                    <!-- Gender Selection -->
+                    <div class="bg-white rounded-xl shadow-lg p-6 mb-6">
+                        <h2 class="text-xl font-semibold mb-4 text-gray-700">Choose Avatar</h2>
+                        <div class="flex gap-4 justify-center">
+                            <button class="avatar-btn selected bg-blue-100 hover:bg-blue-200 px-6 py-3 rounded-lg font-medium transition-colors" data-gender="male">
+                                Male
+                            </button>
+                            <button class="avatar-btn bg-pink-100 hover:bg-pink-200 px-6 py-3 rounded-lg font-medium transition-colors" data-gender="female">
+                                Female
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Shirts -->
+                    <div class="bg-white rounded-xl shadow-lg p-6 mb-6">
+                        <h2 class="text-xl font-semibold mb-4 text-gray-700">Shirts</h2>
+                        <div class="grid grid-cols-3 gap-4">
+                            <div class="clothing-item bg-blue-500 rounded-lg p-4 aspect-square" data-type="shirt" data-color="#3b82f6">
+                                <div class="w-full h-full flex items-center justify-center text-white text-xl">T</div>
+                            </div>
+                            <div class="clothing-item bg-red-500 rounded-lg p-4 aspect-square" data-type="shirt" data-color="#ef4444">
+                                <div class="w-full h-full flex items-center justify-center text-white text-xl">T</div>
+                            </div>
+                            <div class="clothing-item bg-green-500 rounded-lg p-4 aspect-square" data-type="shirt" data-color="#22c55e">
+                                <div class="w-full h-full flex items-center justify-center text-white text-xl">T</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Pants -->
+                    <div class="bg-white rounded-xl shadow-lg p-6 mb-6">
+                        <h2 class="text-xl font-semibold mb-4 text-gray-700">Pants</h2>
+                        <div class="grid grid-cols-3 gap-4">
+                            <div class="clothing-item bg-indigo-800 rounded-lg p-4 aspect-square" data-type="pants" data-color="#3730a3">
+                                <div class="w-full h-full flex items-center justify-center text-white text-xl">P</div>
+                            </div>
+                            <div class="clothing-item bg-gray-700 rounded-lg p-4 aspect-square" data-type="pants" data-color="#374151">
+                                <div class="w-full h-full flex items-center justify-center text-white text-xl">P</div>
+                            </div>
+                            <div class="clothing-item bg-amber-700 rounded-lg p-4 aspect-square" data-type="pants" data-color="#b45309">
+                                <div class="w-full h-full flex items-center justify-center text-white text-xl">P</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Shoes -->
+                    <div class="bg-white rounded-xl shadow-lg p-6">
+                        <h2 class="text-xl font-semibold mb-4 text-gray-700">Shoes</h2>
+                        <div class="grid grid-cols-3 gap-4">
+                            <div class="clothing-item bg-black rounded-lg p-4 aspect-square" data-type="shoes" data-color="#000000">
+                                <div class="w-full h-full flex items-center justify-center text-white text-xl">S</div>
+                            </div>
+                            <div class="clothing-item bg-white border border-gray-200 rounded-lg p-4 aspect-square" data-type="shoes" data-color="#ffffff">
+                                <div class="w-full h-full flex items-center justify-center text-gray-800 text-xl">S</div>
+                            </div>
+                            <div class="clothing-item bg-amber-500 rounded-lg p-4 aspect-square" data-type="shoes" data-color="#f59e0b">
+                                <div class="w-full h-full flex items-center justify-center text-white text-xl">S</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="bg-gray-800 text-white py-6 mt-12">
+            <div class="container mx-auto px-4 text-center">
+                <p>Virtual Dressing Room Demo &copy; 2023</p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Avatar state
+            let currentGender = 'male';
+            let currentShirt = null;
+            let currentPants = null;
+            let currentShoes = null;
+            
+            // SVG layers
+            const shirtLayer = document.getElementById('shirt-layer');
+            const pantsLayer = document.getElementById('pants-layer');
+            const shoesLayer = document.getElementById('shoes-layer');
+            
+            // Gender selection
+            const avatarButtons = document.querySelectorAll('.avatar-btn');
+            avatarButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    avatarButtons.forEach(btn => btn.classList.remove('selected'));
+                    this.classList.add('selected');
+                    currentGender = this.dataset.gender;
+                    updateAvatar();
+                });
+            });
+            
+            // Clothing selection
+            const clothingItems = document.querySelectorAll('.clothing-item');
+            clothingItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    const type = this.dataset.type;
+                    const color = this.dataset.color;
+                    
+                    // Remove selection from other items of same type
+                    document.querySelectorAll(`.clothing-item[data-type="${type}"]`).forEach(el => {
+                        el.classList.remove('selected');
+                    });
+                    
+                    // Add selection to this item
+                    this.classList.add('selected');
+                    
+                    // Update avatar
+                    if (type === 'shirt') {
+                        currentShirt = color;
+                    } else if (type === 'pants') {
+                        currentPants = color;
+                    } else if (type === 'shoes') {
+                        currentShoes = color;
+                    }
+                    
+                    updateAvatar();
+                });
+            });
+            
+            // Reset button
+            document.getElementById('reset-btn').addEventListener('click', function() {
+                currentShirt = null;
+                currentPants = null;
+                currentShoes = null;
+                
+                // Clear selections
+                clothingItems.forEach(item => {
+                    item.classList.remove('selected');
+                });
+                
+                updateAvatar();
+            });
+            
+            // Update avatar based on selections
+            function updateAvatar() {
+                // Update shirt
+                if (currentShirt) {
+                    shirtLayer.innerHTML = `
+                        <path d="M100,120 L100,270 Q150,290 200,270 L200,120 Q150,140 100,120" fill="${currentShirt}"/>
+                        <path d="M100,120 L60,220 L70,230 L110,130 Z" fill="${currentShirt}"/>
+                        <path d="M200,120 L240,220 L230,230 L190,130 Z" fill="${currentShirt}"/>
+                    `;
+                } else {
+                    shirtLayer.innerHTML = '';
+                }
+                
+                // Update pants
+                if (currentPants) {
+                    pantsLayer.innerHTML = `
+                        <path d="M100,270 L90,500 L130,500 L140,270 Z" fill="${currentPants}"/>
+                        <path d="M200,270 L210,500 L170,500 L160,270 Z" fill="${currentPants}"/>
+                    `;
+                } else {
+                    pantsLayer.innerHTML = '';
+                }
+                
+                // Update shoes
+                if (currentShoes) {
+                    shoesLayer.innerHTML = `
+                        <ellipse cx="110" cy="500" rx="30" ry="10" fill="${currentShoes}"/>
+                        <ellipse cx="190" cy="500" rx="30" ry="10" fill="${currentShoes}"/>
+                    `;
+                } else {
+                    shoesLayer.innerHTML = '';
+                }
+            }
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'960a4ea872792963',t:'MTc1Mjc2MTI2My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
